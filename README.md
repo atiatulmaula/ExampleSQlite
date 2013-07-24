@@ -7,7 +7,7 @@ Contoh penggunaan SQLite pada Android
 
 Feature :
 - Singleton Pattern
-- Search (next...)
+- Search Data Listview
 
 Developed By
 ============
