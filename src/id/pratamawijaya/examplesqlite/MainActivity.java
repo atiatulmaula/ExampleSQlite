@@ -6,7 +6,9 @@ import id.pratamawijaya.examplesqlite.entity.E_Buku;
 import id.pratamawijaya.examplesqlite.util.DBAdapter;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -34,23 +36,37 @@ public class MainActivity extends Activity implements OnItemClickListener
 
 		listBuku = db.getAllBuku();
 
-		adapter = new ArrayAdapter<E_Buku>(this, android.R.layout.simple_list_item_1, listBuku);
-		lv.setAdapter(adapter);
+		if (listBuku != null)
+		{
+			adapter = new ArrayAdapter<E_Buku>(this, android.R.layout.simple_list_item_1, listBuku);
+			lv.setAdapter(adapter);
+		}
 
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 
 	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case R.id.add_data:
+				startActivity(new Intent(this, AddDataActivity.class));
+				finish();
+				break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3)
 	{
-		// TODO Auto-generated method stub
 
 	}
 

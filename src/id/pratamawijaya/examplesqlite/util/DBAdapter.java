@@ -14,6 +14,7 @@ import id.pratamawijaya.examplesqlite.entity.E_Buku;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -32,7 +33,7 @@ public class DBAdapter extends SQLiteOpenHelper
 	private static DBAdapter		dbInstance			= null;
 	private static SQLiteDatabase	db;
 
-	private static final String		CREATE_BUKU			= "CREATE TABLE tb_buku(_id integer primary key not null autoincrement, judul text, penerbit text)";
+	private static final String		CREATE_BUKU			= "CREATE TABLE tb_buku(_id integer primary key autoincrement not null , judul text, penerbit text)";
 
 	private DBAdapter(Context context)
 	{
@@ -93,19 +94,38 @@ public class DBAdapter extends SQLiteOpenHelper
 				COL_BUKU_ID, COL_BUKU_JUDUL, COL_BUKU_PENERBIT
 		}, null, null, null, null, null);
 
-		if (cursor != null)
-			cursor.moveToFirst();
-		do
+		/*
+		 * Cek apakah ada data atau tidak
+		 */
+		if (cursor.getCount() >= 1)
 		{
-			E_Buku buku = new E_Buku();
-			buku.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COL_BUKU_ID)));
-			buku.setJudul(cursor.getString(cursor.getColumnIndexOrThrow(COL_BUKU_JUDUL)));
-			buku.setPenerbit(cursor.getString(cursor.getColumnIndexOrThrow(COL_BUKU_PENERBIT)));
-			listBuku.add(buku);
+			cursor.moveToFirst();
 
-		} while (cursor.moveToNext());
+			do
+			{
+				E_Buku buku = new E_Buku();
+				buku.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COL_BUKU_ID)));
+				buku.setJudul(cursor.getString(cursor.getColumnIndexOrThrow(COL_BUKU_JUDUL)));
+				buku.setPenerbit(cursor.getString(cursor.getColumnIndexOrThrow(COL_BUKU_PENERBIT)));
+				listBuku.add(buku);
+
+			} while (cursor.moveToNext());
+
+		}
 
 		return listBuku;
 	}
 
+	/*
+	 * Insert Data
+	 */
+	public boolean insertData(E_Buku buku)
+	{
+		ContentValues values = new ContentValues();
+		values.put(COL_BUKU_JUDUL, buku.getJudul());
+		values.put(COL_BUKU_PENERBIT, buku.getPenerbit());
+
+		long cek = db.insert(TABLE_BUKU, null, values);
+		return (cek != -1) ? true : false;
+	}
 }

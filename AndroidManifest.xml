@@ -19,5 +19,9 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
+		<activity
+			android:name="id.pratamawijaya.examplesqlite.AddDataActivity"
+			android:label="@string/title_activity_add_data" >
+		</activity>
 	</application>
 </manifest>
